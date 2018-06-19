@@ -25,7 +25,12 @@ public class ExampleAgent extends BaseAgent
 	/**
 	 * The serial UID.
 	 */
-	private static final long serialVersionUID = -3967827884981805793L;
+	private static final long	serialVersionUID	= -3967827884981805793L;
+	
+	/**
+	 * Text area for displaying the KB.
+	 */
+	final JTextArea				KBTextArea			= new JTextArea(5, 20);
 	
 	@Override
 	protected void setup()
@@ -78,7 +83,25 @@ public class ExampleAgent extends BaseAgent
 		});
 		panel.add(move);
 		
-		final JTextArea KBTextArea = new JTextArea(5, 20);
+		// KB entry field
+		final JTextField kbEntry = new JTextField("key:value", 20);
+		panel.add(kbEntry);
+		
+		// move button
+		JButton kbAdd = new JButton("Add to KB for 10 seconds");
+		kbAdd.addActionListener(new ActionListener() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				String[] keyVal = kbEntry.getText().split(":");
+				kb.add(keyVal[0].trim(), keyVal[1].trim(), 10);
+				refreshKBTextArea();
+			}
+		});
+		panel.add(kbAdd);
+		
+		// KB display field
 		panel.add(KBTextArea);
 		
 		JButton refreshKB = new JButton("RefreshKB");
@@ -86,15 +109,23 @@ public class ExampleAgent extends BaseAgent
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.println("time: " + System.currentTimeMillis() + "\n" + getKBContent());
-				KBTextArea.setText("time: " + System.currentTimeMillis() + "\n" + getKBContent());
+				refreshKBTextArea();
 			}
 		});
 		panel.add(refreshKB);
 	}
 	
 	/**
-	 * @return a representation of the content of the Knowledge Base. 
+	 * Refreshes then display of the text area and also prints the KB to the console.
+	 */
+	protected void refreshKBTextArea()
+	{
+		System.out.println("time: " + System.currentTimeMillis() + "\n" + getKBContent());
+		KBTextArea.setText("time: " + System.currentTimeMillis() + "\n" + getKBContent());
+	}
+	
+	/**
+	 * @return a representation of the content of the Knowledge Base.
 	 */
 	protected String getKBContent()
 	{
