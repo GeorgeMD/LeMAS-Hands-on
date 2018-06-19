@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Thu May 22 21:48:49 EEST 2014
+markTmpDer=true
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=
+mainTexFile=LeMAS-doc.tex
+outputFile=LeMAS-doc.pdf
+langSpell=en
+markDer=true
+srcDir=

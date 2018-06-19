@@ -1,0 +1,1 @@
+java -cp .;jade.jar jade.Boot -gui -platform-id LeMAS -container-name Central-AO -agents Echo-AO:example.EchoAgent

@@ -1,0 +1,8 @@
+Linux:
+
+java -cp bin:lib/jade.jar jade.Boot -container -host TODO -port 1099 -container-name TODO -agents TODO:example.ExampleAgent
+
+
+Windows:
+
+java -cp bin;lib/jade.jar jade.Boot -container -host TODO -port 1099 -container-name TODO -agents TODO:example.ExampleAgent

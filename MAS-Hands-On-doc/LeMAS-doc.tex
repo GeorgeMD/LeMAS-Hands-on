@@ -1,0 +1,223 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+% \newcommand{\languagesetting}{romanian}
+\newcommand{\elementsroot}{../../../../../RSH/}
+\usepackage{\elementsroot_package/quick}
+
+\begin{document}
+% \textbf{LeMAS Agents}\small
+
+
+\textsc{The building}
+\begin{itemize}
+	\item Receives registrations from agents which manage rooms in the building.
+	\item Receives registrations about agents which represent devices and about agents which offer services.
+	\item Receives queries about which agents offering types of services.
+	\item Responds to said queries (directly to the original agents making the query) with data from its knowledge base or with answers saying that there is no information regarding that query.
+	\item The GUI lists the KB.
+\end{itemize}
+
+
+\textsc{Room1} \\
+\textsc{Room2}
+\begin{itemize}
+	\item Periodically registers with the building.
+	\item Receive registrations from users who are in the room.
+	\item Receive registrations from devices which are in the room. These registrations are forwarded to the building.
+	\item Receives queries about which agents are in the room and answers these queries.
+	\item Receive queries about devices or services which are forwarded to the building, if the room cannot answer them.
+	\item The GUI lists the users and devices in the room.
+\end{itemize}
+
+% \textsc{Services Server}
+% \begin{itemize}
+% 	\item 
+% \end{itemize}
+
+
+\textsc{Location Service}
+\begin{itemize}
+	\item Periodically registers with the building.
+	\item Can be asked by an agent to move locally to a container.
+	\item After doing so, it will periodically find out (by querying the building and the rooms) in which room the container is located.
+	\item Receives queries about its current location and answers them.
+	\item The GUI prints the location.
+\end{itemize}
+
+
+\textsc{Navigation Service}
+\begin{itemize}
+	\item Periodically registers with the building.
+	\item Can be asked by an agent to move locally to a container. The message will also contain the name of a Location agent.
+	\item The GUI offers a text field in which the user can write the name of a room, and a button.
+	\begin{itemize}
+		\item When the button is pressed, the agent asks the Location agent for the current location,
+		\item The GUI will print directions on how to get from the current location to the room entered by the user.
+	\end{itemize}
+\end{itemize}
+
+\newpage
+
+\textsc{Display}
+\begin{itemize}
+	\item Periodically registers with Room1.
+	\item Receives a request from an agent to print a string in the GUI.
+\end{itemize}
+
+
+\textsc{Projector}
+\begin{itemize}
+	\item Periodically registers with Room2.
+	\item Receives requests from an agent to print a string in the GUI.
+\end{itemize}
+
+
+\textsc{Printer}
+\begin{itemize}
+	\item Periodically registers with Room2.
+	\item Receives requests from agents for strings to print.
+	\item The GUI shows all strings that have been requested for printing.
+	\item A button in the GUI clears the print history. 
+\end{itemize}
+
+
+\textsc{Course-A}
+\begin{itemize}
+	\item Periodically registers with Room1.
+	\item Receives registrations from users who are part of the course.
+	\item The GUI prints the user list.
+	\item The GUI has a text field and a button.
+	\begin{itemize}
+		\item When the button is pressed, the agent queries the room for a projector.
+		\item When a projector is found, it asks the projector to show the string in the text field.
+	\end{itemize}
+\end{itemize}
+
+
+\textsc{Course-B}
+\begin{itemize}
+	\item Receives registrations from users who are part of the course.
+	\item Periodically registers with its current room.
+	\item Its initial room is Room1.
+	\item The GUI prints the user list.
+	\item The GUI has a button ``assign to Room2''.
+	\begin{itemize}
+		\item When the button is pressed, the course changes its currently assigned room (registers with Room2).
+		\item When this happens, it notifies all users of the change.
+	\end{itemize}
+\end{itemize}
+
+\newpage
+
+\textsc{User\_disp} -- a user that needs a display
+\begin{itemize}
+	\item Periodically registers with its current room.
+	\item Its initial room is Room1.
+	\item The GUI has two buttons and a text field.
+	\begin{itemize}
+		\item When button ``Show on display'' is pressed, the agent queries its current room for a display.
+		\item When the name of an agent which can display is received, it sends to it the string in the text field.
+		\item When button ``Move to other room'' is pressed, it registers with the other room. 
+	\end{itemize}
+	\item Periodically registers with Course-B.
+\end{itemize}
+
+
+\textsc{User\_print} -- a user that needs a printer
+\begin{itemize}
+	\item Periodically registers with its current room.
+	\item Its initial room is Room1.
+	\item The GUI has two buttons and a text field.
+	\begin{itemize}
+		\item When button ``Send to printer'' is pressed, the agent queries its current room for a printer.
+		\item When the name of an agent which can print is received, it sends to it the string in the text field.
+		\item When button ``Move to other room'' is pressed, it registers with the other room. 
+	\end{itemize}
+	\item Periodically registers with Course-A.
+\end{itemize}
+
+
+\textsc{User\_nav} -- a user that needs navigation
+\begin{itemize}
+	\item Periodically registers with Room2.
+	\item The GUI has a text field and two buttons.
+	\begin{itemize}
+		\item When the ``Location'' button is pressed, the agent queries its current room for a location service.
+		\item When the name of an agent offering location services is received, this agent asks it to come to the current container.
+		\item When the ``Navigate'' button is pressed, the agent queries its current room for a navigation service.
+		\item When the name of an agent offering navigation services is received, this agent asks it to come to the current container and also includes the name of the Location agent in the message.
+		\item After some time, it asks the Navigation agent how it can get to the room in the text field, and prints the result in the GUI.
+	\end{itemize}
+	\item Periodically registers with Course-B.
+\end{itemize}
+
+
+\textsc{User\_course} -- a user that is part of Course-A
+\begin{itemize}
+	\item Periodically registers with Course-A.
+\end{itemize}
+
+
+% \textbf{Place agents}
+% \begin{itemize}\vspace*{-2ex}
+% 	\item Types: Building, Room.
+% 	\item Features: Lights (on / off).
+% 	\item Relations outgoing from this agent: \code{is-in}, to another Place.
+% 	\item Relations incoming to this agent: \code{is-in}, from another Place or any other type of agent.
+% 	\item Startup: all Rooms register with the Building.
+% 	\item Behavior: when a query is receved regarding a type of Device, search in all children of  this agent, then in the parent of this agent, if any.
+% \end{itemize}
+% 
+% \textbf{Device agents}
+% \begin{itemize}\vspace*{-2ex}
+% 	\item Types: Projection Screen, Printer.
+% 	\item Features: Projection Screens and Printers are able to display a text.
+% 	\item Relations outgoing from this agent: \code{is-in}, to a Room; \code{controlled-by}, to a User.
+% 	\item Relations incoming to this agent: \code{executes-on}, from a Service.
+% 	\item Startup: The Device registers with the room it is in.
+% 	\item Behavior: The parent Room can instruct this agent to be controlled by a particular User. Then a relation is created and the User is able to send text to this device, until the User does not wish to control it any more.
+% \end{itemize}
+% 
+% \textbf{Service agents}
+% \begin{itemize}\vspace*{-2ex}
+% 	\item Types: Navigation service, Location service.
+% 	\item Features: show path to a room (Navigation); locate a user (Location).
+% 	\item Relations outgoing from this agent: \code{executes-on}, to a Device; \code{is-in}, to a Place (a Building).
+% 	\item Relations incoming to this agent: -.
+% 	\item Startup: register with the parent Building.
+% 	\item Behavior: when the Building instructs it to do so, the Service will move to the indicated Device and offer the service there.
+% \end{itemize}
+% 
+% \textbf{Activity agents}
+% \begin{itemize}\vspace*{-2ex}
+% 	\item Types: Course.
+% 	\item Features: broadcast messages between participants.
+% 	\item Relations outgoing from this agent: \code{is-in}, to a Place (a Room).
+% 	\item Relations incoming to this agent: \code{part-of}, from a User.
+% 	\item Startup: - (wait for participants).
+% 	\item Behavior: when a message is received from a registered user, broadcast that message to the other users.
+% \end{itemize}
+% 
+% \textbf{User agents}
+% \begin{itemize}\vspace*{-2ex}
+% 	\item Types: User.
+% 	\item Features: Responds to a user's needs.
+% 	\item Relations outgoing from this agent: \code{part-of}, to an Activity; \code{is-in}, to a Place (a Room).
+% 	\item Relations incoming to this agent: \code{controlled-by}, from a Device.
+% 	\item Startup: registers with the current Room and with the current Activity.
+% 	\item Behavior: offers some services to the user:
+% 	\begin{itemize}
+% 		\item the user may change the current Room and Activity;
+% 		\item the user may send a message to the participants in the same Activity.
+% 		\item the user may search for a device that can display (a screen) or print.
+% 		\item the user may ask for the location of another user.
+% 		\item the user may ask for the navigation service to come to his/her machine.
+% 	\end{itemize}
+% \end{itemize}
+
+
+
+
+% Register
+
+
+\end{document}
